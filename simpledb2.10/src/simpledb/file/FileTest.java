@@ -17,5 +17,5 @@ public class FileTest {
 		String s = p3.getString(20);
 		assertEquals("hello", s);
 	}
-	
+
 }
