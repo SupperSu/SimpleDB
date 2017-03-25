@@ -33,6 +33,7 @@ class BasicBufferMgr {
    
    /**
     * Flushes the dirty buffers modified by the specified transaction.
+    * flush means force a specific to disk
     * @param txnum the transaction's id number
     */
    synchronized void flushAll(int txnum) {

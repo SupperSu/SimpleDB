@@ -16,5 +16,6 @@ public class Startup {
       reg.rebind("simpledb", d);
       
       System.out.println("database server ready");
+      
    }
 }
