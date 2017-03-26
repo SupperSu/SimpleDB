@@ -2,14 +2,12 @@ package Authenticate;
 import java.util.*;import java.applet.*;import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.application.Platform;
+
 
 
 public class Login extends Applet implements ActionListener{
 	
-	//private JPanel pane = null; // 主要的JPanel，该JPanel的布局管理将被设置成CardLayout
+	//private JPanel pane = null; // 
 	//private JPanel p = null;
 	    JTextField textUser;
 	    JPasswordField textPass;

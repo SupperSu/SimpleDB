@@ -22,6 +22,18 @@ public class BufferMgr {
    private static final long MAX_TIME = 10000; // 10 seconds
    private BasicBufferMgr bufferMgr;
    
+   public BufferMgr(int numBuffers, int replaceMethod){
+	   switch (replaceMethod){
+	   case 1:
+		   bufferMgr = new BasicBufferMgrLRU(numBuffers);
+	   	   break;
+	   
+	   case 2:
+		   bufferMgr = new FIFO(numBuffers);
+		   break;
+   		}
+	   // add FIFO method here;
+   }
    /**
     * Creates a new buffer manager having the specified 
     * number of buffers.

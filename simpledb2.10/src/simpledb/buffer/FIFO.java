@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Edward Sciore
  *
  */
-class FIFO {
+class FIFO extends BasicBufferMgr{
    private static Map<Block, Buffer> bufferpool = new LinkedHashMap<Block, Buffer>();
    private int numAvailable;
    private int bufferPoolSize;
@@ -28,7 +28,7 @@ class FIFO {
     * @param numbuffs the number of buffer slots to allocate
     */
    FIFO(int numbuffs) {
-      numAvailable = numbuffs;
+      super(numbuffs);
       bufferPoolSize = numbuffs;
    }
    

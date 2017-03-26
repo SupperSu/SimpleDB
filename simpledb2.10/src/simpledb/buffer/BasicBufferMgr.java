@@ -8,9 +8,8 @@ import simpledb.file.*;
  *
  */
 class BasicBufferMgr {
-   private Buffer[] bufferpool;
+   public Buffer[] bufferpool;
    private int numAvailable;
-  
    
    /**
     * Creates a buffer manager having the specified number 
@@ -116,6 +115,7 @@ class BasicBufferMgr {
       for (Buffer buff : bufferpool)
          if (!buff.isPinned())
          return buff;
+      
       return null;
    }
 }
