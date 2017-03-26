@@ -16,11 +16,11 @@ public class BufferTest {
 	@Test
 	public void testSortBuffer (){
 		
-		Buffer[] bufferPool = new Buffer[6];
-		for (int i = 0; i < 6; i++){
+		Buffer[] bufferPool = new Buffer[3];
+		for (int i = 0; i < 3; i++){
 			bufferPool[i] = new Buffer();
 		}
-		bufferPool[0].tagUnPinedTimeStamp(123);
+		bufferPool[0].tagUnPinedTimeStamp(System.currentTimeMillis());
 		bufferPool[1].tagUnPinedTimeStamp(96);
 		for (Buffer buff : bufferPool){
 			System.out.println(buff.getUnPinedTime());
@@ -44,22 +44,15 @@ public class BufferTest {
 		Buffer buff2 = bmgr.pin(blk2);
 		Buffer buff3 = bmgr.pin(blk3);
 		Buffer buff4 = bmgr.pin(blk4);
-		for (Buffer buff : bmgr.buffers){
-			System.out.print(buff.getUnPinedTime());
-			System.out.println(buff);
-			
-		}
+		
 		System.out.println("*****************");
 		bmgr.unpin(buff2);
 		bmgr.unpin(buff1);
-		System.out.println("*****************");
-		System.out.println("*****************");
 		bmgr.unpin(buff4);
-		for (Buffer buff : bmgr.buffers){
-			System.out.print(buff.getUnPinedTime());
-			System.out.println(buff);
-		}
-	
 		bmgr.pin(blk5);
+		for(int i = 0; i < 4; i++){
+			System.out.println(bmgr.bufferpool[i].getUnPinedTime());
+		}
+		
 	}
 }

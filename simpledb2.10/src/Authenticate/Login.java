@@ -2,7 +2,7 @@ package Authenticate;
 import java.util.*;import java.applet.*;import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-
+import simpledb.server.*;
 
 
 public class Login extends Applet implements ActionListener{
@@ -43,6 +43,10 @@ public class Login extends Applet implements ActionListener{
 	        if(e.getSource()==b1){
 	            String username = textUser.getText();
 	            String myPass=String.valueOf(textPass.getPassword());
+	            System.out.println(username);
+	            System.out.println(myPass);
+	            System.out.println(username.getClass().getName());
+	            System.out.println(myPass.getClass().getName());
 	            boolean re = true;
 	            re = pairs.searchPairs(username,myPass);
 	            if(!re){
@@ -52,7 +56,15 @@ public class Login extends Applet implements ActionListener{
 		            textUser.setText(null);
 		            textPass.setText(null);
 	            	
+	            }else{
+	            	try {
+						Startup.begin("studentdb");
+					} catch (Exception e1) {
+						
+						e1.printStackTrace();
+					}
 	            }
+	           
 	           
 	        }
 	        else if(e.getSource()==b2){

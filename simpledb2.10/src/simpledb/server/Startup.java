@@ -4,9 +4,9 @@ import simpledb.remote.*;
 import java.rmi.registry.*;
 
 public class Startup {
-   public static void main(String args[]) throws Exception {
+   public static void begin(String string) throws Exception {
       // configure and initialize the database
-      SimpleDB.init(args[0]);
+      SimpleDB.init(string);
       
       // create a registry specific for the server on the default port
       Registry reg = LocateRegistry.createRegistry(1099);

@@ -1,4 +1,5 @@
 package simpledb.buffer;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import simpledb.file.*;
@@ -54,7 +55,6 @@ public class BasicBufferMgrLRU extends BasicBufferMgr {
 	      buff.unpin();
 	      long timestamp = System.currentTimeMillis();
 	      buff.tagUnPinedTimeStamp(timestamp);
-	      
 	      if (!buff.isPinned())
 	         numAvailable++;
 	   }
@@ -72,7 +72,8 @@ public class BasicBufferMgrLRU extends BasicBufferMgr {
 	
 	private Buffer chooseUnpinnedBuffer() {
 		// check free buffer first
-		for (Buffer buff : buffers){
+		Arrays.sort(bufferPool,Buffer.BufferUnpinedTimeComparator);
+		for (Buffer buff : bufferPool){
 			if (buff.isNeverUsed()){
 				return buff;
 			}else{
