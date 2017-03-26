@@ -43,6 +43,10 @@ public class Login extends Applet implements ActionListener{
 	        if(e.getSource()==b1){
 	            String username = textUser.getText();
 	            String myPass=String.valueOf(textPass.getPassword());
+	            System.out.println(username);
+	            System.out.println(myPass);
+	            System.out.println(username.getClass().getName());
+	            System.out.println(myPass.getClass().getName());
 	            boolean re = true;
 	            re = pairs.searchPairs(username,myPass);
 	            if(!re){
