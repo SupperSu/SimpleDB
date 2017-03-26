@@ -19,13 +19,14 @@ import java.util.*;
  * Method {@link #isNew() isNew} is called during system initialization by {@link simpledb.server.SimpleDB#init}.
  * Method {@link #size(String) size} is called by the log manager and transaction manager to
  * determine the end of the file.
- * @author Edward Sciore
+ * @author Edward Sciore, Yupeng Su
  */
 public class FileMgr {
    private File dbDirectory;
    private boolean isNew;
    private Map<String,FileChannel> openFiles = new HashMap<String,FileChannel>();
-
+   private int num_block_read;
+   private int num_block_write;
    /**
     * Creates a file manager for the specified database.
     * The database will be stored in a folder of that name
@@ -39,7 +40,8 @@ public class FileMgr {
       String homedir = System.getProperty("user.home");
       dbDirectory = new File(homedir, dbname);
       isNew = !dbDirectory.exists();
-
+      num_block_read = 0;
+      num_block_write = 0;
       // create the directory if the database is new
       if (isNew && !dbDirectory.mkdir())
          throw new RuntimeException("cannot create " + dbname);
@@ -60,6 +62,7 @@ public class FileMgr {
          bb.clear();
          FileChannel fc = getFile(blk.fileName());
          fc.read(bb, blk.number() * BLOCK_SIZE);
+         num_block_read++;
       }
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
@@ -76,6 +79,7 @@ public class FileMgr {
          bb.rewind();
          FileChannel fc = getFile(blk.fileName());
          fc.write(bb, blk.number() * BLOCK_SIZE);
+         num_block_write++;
       }
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
@@ -138,5 +142,11 @@ public class FileMgr {
          openFiles.put(filename, fc);
       }
       return fc;
+   }
+   public int getNumBlkWritten(){
+	   return num_block_write;
+   }
+   public int getNumBlkRead(){
+	   return num_block_read;
    }
 }
