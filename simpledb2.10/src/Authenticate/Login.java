@@ -56,13 +56,6 @@ public class Login extends Applet implements ActionListener{
 		            textUser.setText(null);
 		            textPass.setText(null);
 	            	
-	            }else{
-	            	try {
-						Startup.begin("studentdb");
-					} catch (Exception e1) {
-						
-						e1.printStackTrace();
-					}
 	            }
 	           
 	           
