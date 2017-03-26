@@ -29,6 +29,7 @@ class FIFO extends BasicBufferMgr{
     */
    FIFO(int numbuffs) {
       super(numbuffs);
+      numAvailable = numbuffs;
       bufferPoolSize = numbuffs;
    }
    
@@ -55,10 +56,13 @@ class FIFO extends BasicBufferMgr{
       Buffer buff = findExistingBuffer(blk);
       if (buff == null) {
          buff = chooseUnpinnedBuffer();
+         System.out.println(buff);
          if (buff == null)
             return null;
          bufferpool.remove(buff.block());
+         long timestamp = System.currentTimeMillis();
          buff.assignToBlock(blk);
+         buff.tagPinedTimeStamp(timestamp);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -94,6 +98,8 @@ class FIFO extends BasicBufferMgr{
     */
    synchronized void unpin(Buffer buff) {
       buff.unpin();
+      long timestamp = System.currentTimeMillis();
+      buff.tagUnPinedTimeStamp(timestamp);
       if (!buff.isPinned())
          numAvailable++;
    }
