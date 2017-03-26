@@ -52,6 +52,8 @@ public class BufferTest {
 		System.out.println("*****************");
 		bmgr.unpin(buff2);
 		bmgr.unpin(buff1);
+		System.out.println("*****************");
+		System.out.println("*****************");
 		bmgr.unpin(buff4);
 		for (Buffer buff : bmgr.buffers){
 			System.out.print(buff.getUnPinedTime());
