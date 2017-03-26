@@ -10,6 +10,7 @@ import simpledb.file.*;
 class BasicBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
+  
    
    /**
     * Creates a buffer manager having the specified number 
