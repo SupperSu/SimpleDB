@@ -24,7 +24,7 @@ public class pairs {
 		pairs.put(userT,passT);
 		pairs.put(userW,passW);
 		if(pairs.containsKey(username)){
-			return password == pairs.get(username);
+			return password.equals(pairs.get(username));
 		}
 		return false;
 	}
