@@ -1,5 +1,6 @@
 package simpledb.buffer;
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import simpledb.file.*;
 import simpledb.server.SimpleDB;
 /**
@@ -13,6 +14,7 @@ public class BasicBufferMgrLRU extends BasicBufferMgr {
 	private Buffer[] bufferPool;
 	private int numAvailable;
 	private int neverUsed;
+	public Queue<Buffer> buffers;
 	/**
 	    * Apply the same constructor with the BasicBufferMgr
 	    * Construct a buffer with defined number of buffers.
@@ -21,6 +23,10 @@ public class BasicBufferMgrLRU extends BasicBufferMgr {
 	public BasicBufferMgrLRU(int numBuffs){
 		super(numBuffs);
 		bufferPool = super.bufferpool;
+		buffers = new PriorityQueue<Buffer>(numBuffs, Buffer.BufferUnpinedTimeComparator);
+		for (int i = 0; i < numBuffs; i++){
+			buffers.add(new Buffer());
+		}
 	}
 	
 	@Override
@@ -66,28 +72,17 @@ public class BasicBufferMgrLRU extends BasicBufferMgr {
 	
 	private Buffer chooseUnpinnedBuffer() {
 		// check free buffer first
-		Arrays.sort(bufferPool, Buffer.BufferUnpinedTimeComparator);
-		int i = 0;
-		for (Buffer buff : bufferPool){
-			
+		for (Buffer buff : buffers){
 			if (buff.isNeverUsed()){
 				return buff;
-			} 
-			
-			if (!bufferPool[i].isPinned()){
-					return bufferPool[i];
+			}else{
+				if(buff.isPinned()){
+					continue;
+				}else{
+					return buff;
 				}
-			i++;
 			}
-		
-		
+		}
 		return null;
 	}
-		
-		
-	
-	      
-	
-	
-	
 }

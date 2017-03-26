@@ -16,7 +16,7 @@ import simpledb.file.*;
  * the LSN of the corresponding log record.
  * @author Edward Sciore
  */
-public class Buffer implements Comparable<Buffer>{
+public class Buffer {
    private Page contents = new Page();
    private Block blk = null;
    private int pins = 0;
@@ -208,30 +208,14 @@ public class Buffer implements Comparable<Buffer>{
 	   long time = this.timePined;
 	   return time == 0;
    }
-   @Override
-	public int compareTo(Buffer buff) {
-	   
-	   if (this.isPinned()){
-		   return Integer.MAX_VALUE;
-	   }else {
-		 if(!buff.isPinned())
-			   return Math.toIntExact((this.timeUnPined - buff.timeUnPined) / 1000000);
-		 else{
-			 return Integer.MIN_VALUE;
-		 }
-		   
-	   }
-	   
-//	    if(!buff.isPinned() && !this.isPinned()){
-//	    	return Math.toIntExact(this.timeUnPined - buff.timeUnPined);
-//	    }
-//	    if (this.isPinned())return Integer.MAX_VALUE;
-	    
-	}
-	
+   
    public static Comparator<Buffer> BufferUnpinedTimeComparator = new Comparator<Buffer>(){
 	   public int compare(Buffer buff1, Buffer buff2){
-		   return buff1.compareTo(buff2);
+		   if (buff1.getUnPinedTime() < buff2.getUnPinedTime()){
+			   return -1;
+		   }else if(buff1.getUnPinedTime() > buff2.getUnPinedTime()){
+			   return 1;
+		   }else return 0;
 	   }
    };
    

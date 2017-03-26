@@ -1,6 +1,7 @@
 package simpledb.buffer;
 import static org.junit.Assert.*;
 
+import java.awt.image.BufferStrategy;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -43,9 +44,20 @@ public class BufferTest {
 		Buffer buff2 = bmgr.pin(blk2);
 		Buffer buff3 = bmgr.pin(blk3);
 		Buffer buff4 = bmgr.pin(blk4);
+		for (Buffer buff : bmgr.buffers){
+			System.out.print(buff.getUnPinedTime());
+			System.out.println(buff);
+			
+		}
+		System.out.println("*****************");
 		bmgr.unpin(buff2);
 		bmgr.unpin(buff1);
 		bmgr.unpin(buff4);
+		for (Buffer buff : bmgr.buffers){
+			System.out.print(buff.getUnPinedTime());
+			System.out.println(buff);
+		}
+	
 		bmgr.pin(blk5);
 	}
 }
