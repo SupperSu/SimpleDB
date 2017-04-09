@@ -15,6 +15,13 @@ import simpledb.server.SimpleDB;
 public class BufferTest {
 
 	
+	//before run test, do make 
+	// void assignToBlock(Block b) {
+//    flush();
+//    blk = b;
+//                         // make this line invalid*contents.read(blk);*
+//    pins = 0;
+// }
 
 	@Test
 	public void testLRu(){
@@ -31,11 +38,10 @@ public class BufferTest {
 //		BufferLRU buff4 = bmgr.pin(blk4);
 //		BufferLRU buff5 = bmgr.pin(blk5);
 		bmgr.unpin(buff1);
-		BufferLRU buff5 = bmgr.pin(blk5);		
-		BufferLRU buff4 = bmgr.pin(blk4);
-		bmgr.unpin(buff2);
+		bmgr.unpin(buff2);;
 		BufferLRU buff6 = bmgr.pin(blk6);
-		System.out.println(bmgr.buffers.get(2));
+		BufferLRU buff4 = bmgr.pin(blk4);
+		System.out.println(bmgr.buffers.get(blk1));
 		System.out.println(bmgr.buffers.size());
 	}
 }

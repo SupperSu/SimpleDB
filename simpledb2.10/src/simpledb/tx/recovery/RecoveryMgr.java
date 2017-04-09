@@ -6,6 +6,7 @@ import simpledb.buffer.Buffer;
 import simpledb.server.SimpleDB;
 import java.util.*;
 
+
 /**
  * The recovery manager.  Each transaction has its own recovery manager.
  * @author Edward Sciore
@@ -133,5 +134,13 @@ public class RecoveryMgr {
     */
    private boolean isTempBlock(Block blk) {
       return blk.fileName().startsWith("temp");
+   }
+   
+   public void setNQCKP(){
+	   
+   }
+   
+   private void findNoCommited(){
+	   
    }
 }
