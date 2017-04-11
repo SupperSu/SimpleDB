@@ -2,6 +2,10 @@ package simpledb.tx;
 
 import simpledb.server.SimpleDB;
 import simpledb.file.Block;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import simpledb.buffer.*;
 import simpledb.tx.recovery.RecoveryMgr;
 import simpledb.tx.concurrency.ConcurrencyMgr;
@@ -18,8 +22,10 @@ public class Transaction {
    private RecoveryMgr    recoveryMgr;
    private ConcurrencyMgr concurMgr;
    private int txnum;
+   private static int count = 0;
    private BufferList myBuffers = new BufferList();
-   
+   private static Map<Integer, Transaction> active = new HashMap<Integer, Transaction>();
+   private static Map<Integer, Transaction> waitList = new HashMap<Integer, Transaction>();
    /**
     * Creates a new transaction and its associated 
     * recovery and concurrency managers.
@@ -31,11 +37,25 @@ public class Transaction {
     * {@link simpledb.server.SimpleDB#init(String)} or 
     * {@link simpledb.server.SimpleDB#initFileLogAndBufferMgr(String)} or
     * is called first.
+ * @return 
     */
+   
    public Transaction() {
-      txnum       = nextTxNumber();
-      recoveryMgr = new RecoveryMgr(txnum);
-      concurMgr   = new ConcurrencyMgr();
+	   txnum = nextTxNumber();
+	   recoveryMgr = new RecoveryMgr(txnum);
+	   concurMgr   = new ConcurrencyMgr();
+	   count++;
+	   if (count % 5 == 0){
+		   if (active.isEmpty()){
+			   recoveryMgr.writeCheck();
+		   }
+	   }
+	   if (active.isEmpty()){
+		   active.put(this.txnum, this);
+	   } else {
+		   System.out.println("add to wait list");
+		   waitList.put(this.txnum, this);
+	   }
    }
    
    /**
@@ -48,7 +68,13 @@ public class Transaction {
       recoveryMgr.commit();
       concurMgr.release();
       myBuffers.unpinAll();
-//      System.out.println("transaction " + txnum + " committed");
+      System.out.println("transaction " + txnum + " committed");
+      active.remove(this.txnum);
+      if (active.isEmpty()){
+    	  System.out.println("waitList to active list");
+    	  active.putAll(waitList);
+    	  waitList.clear();
+      }
    }
    
    /**
@@ -124,7 +150,7 @@ public class Transaction {
    public String getString(Block blk, int offset) {
       concurMgr.sLock(blk);
       Buffer buff = myBuffers.getBuffer(blk);
-      return buff.getString(offset);
+      return buff.getString(offset);	
    }
    
    /**
@@ -200,7 +226,8 @@ public class Transaction {
    
    private static synchronized int nextTxNumber() {
       nextTxNum++;
-//      System.out.println("new transaction: " + nextTxNum);
+      System.out.println("new transaction: " + nextTxNum);
       return nextTxNum;
    }
+   
 }

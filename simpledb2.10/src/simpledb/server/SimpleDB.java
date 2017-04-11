@@ -1,5 +1,9 @@
 package simpledb.server;
-
+import java.util.Locale;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import simpledb.file.FileMgr;
 import simpledb.buffer.*;
 import simpledb.tx.Transaction;
@@ -31,19 +35,33 @@ public class SimpleDB {
    private static LogMgr      logm;
    private static MetadataMgr mdm;
    
+   public static String Buffer_Basic_log = "cs542_basic_log";
+   public static String Buffer_LRU_log = "cs542_LRU_log";
+   public static String Buffer_FIFO_log = "cs542_FIFO_log";
    /**
     * Initializes the system.
     * This method is called during system startup.
     * @param dirname the name of the database directory
     */
-   public static void init(String dirname) {
-      initFileLogAndBufferMgr(dirname);
+   private static Logger logger;
+   
+   // Logger for ouput log
+   public static Logger getLogger(){
+	   return logger;
+   }
+   
+   public static void init(String dirname, int bufferMgr) {
+	  System.out.println(dirname);
+      initFileLogAndBufferMgr(dirname, bufferMgr);
       Transaction tx = new Transaction();
       boolean isnew = fm.isNew();
-      if (isnew)
+      if (isnew){
          System.out.println("creating new database");
+      	 logger.log(Level.INFO, "Creating new database");
+      }
       else {
          System.out.println("recovering existing database");
+         logger.log(Level.INFO, "Recovering existing database");
          tx.recover();
       }
       initMetadataMgr(isnew, tx);
@@ -66,18 +84,45 @@ public class SimpleDB {
     * Initializes the file and log managers.
     * @param dirname the name of the database directory
     */
-   public static void initFileAndLogMgr(String dirname) {
+   public static void initFileAndLogMgr(String dirname, String log_name) {
       initFileMgr(dirname);
       logm = new LogMgr(LOG_FILE);
+      try {
+    	  	Locale.setDefault(Locale.ENGLISH);
+			FileHandler logFileHandler = new FileHandler(log_name);
+			logFileHandler.setLevel(Level.ALL);
+
+			SimpleFormatter simpleFormatter = new SimpleFormatter();
+			logFileHandler.setFormatter(simpleFormatter);
+
+			logger = Logger.getGlobal();
+			logger.setUseParentHandlers(false);
+
+			logger.addHandler(logFileHandler);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
    }
    
    /**
     * Initializes the file, log, and buffer managers.
     * @param dirname the name of the database directory
     */
-   public static void initFileLogAndBufferMgr(String dirname) {
-      initFileAndLogMgr(dirname);
-      bm = new BufferMgr(BUFFER_SIZE);
+   public static void initFileLogAndBufferMgr(String dirname, int bufferMgrType) {
+	   String log_name = Buffer_Basic_log;
+		switch (bufferMgrType) {
+			case 1:
+			log_name = Buffer_LRU_log;
+			break;
+			case 2:
+			log_name = Buffer_FIFO_log;
+			break;
+			default: 
+			break;
+		}
+		initFileAndLogMgr(dirname, log_name);
+		bm = new BufferMgr(BUFFER_SIZE, bufferMgrType);
+      
    }
    
    /**

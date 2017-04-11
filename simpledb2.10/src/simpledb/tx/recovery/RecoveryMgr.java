@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class RecoveryMgr {
    private int txnum;
-
+   
    /**
     * Creates a recovery manager for the specified transaction.
     * @param txnum the ID of the specified transaction
@@ -41,7 +41,11 @@ public class RecoveryMgr {
       int lsn = new RollbackRecord(txnum).writeToLog();
       SimpleDB.logMgr().flush(lsn);
    }
-
+   
+   public void writeCheck(){
+	   int lsn = new CheckpointRecord().writeToLog();
+	   SimpleDB.logMgr().flush(lsn);
+   }
    /**
     * Recovers uncompleted transactions from the log,
     * then writes a quiescent checkpoint record to the log and flushes it.
@@ -51,7 +55,6 @@ public class RecoveryMgr {
       SimpleDB.bufferMgr().flushAll(txnum);
       int lsn = new CheckpointRecord().writeToLog();
       SimpleDB.logMgr().flush(lsn);
-
    }
 
    /**
@@ -136,11 +139,4 @@ public class RecoveryMgr {
       return blk.fileName().startsWith("temp");
    }
    
-   public void setNQCKP(){
-	   
-   }
-   
-   private void findNoCommited(){
-	   
-   }
 }

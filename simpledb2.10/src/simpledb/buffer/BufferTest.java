@@ -25,6 +25,7 @@ public class BufferTest {
 
 	@Test
 	public void testLRu(){
+		simpledb.server.SimpleDB.initFileLogAndBufferMgr("studentdb", 1);
 		Block blk1 = new Block("first",1);
 		Block blk2 = new Block("second",2);
 		Block blk3 = new Block("Third",3);
@@ -38,7 +39,7 @@ public class BufferTest {
 //		BufferLRU buff4 = bmgr.pin(blk4);
 //		BufferLRU buff5 = bmgr.pin(blk5);
 		bmgr.unpin(buff1);
-		bmgr.unpin(buff2);;
+		bmgr.unpin(buff2);
 		BufferLRU buff6 = bmgr.pin(blk6);
 		BufferLRU buff4 = bmgr.pin(blk4);
 		System.out.println(bmgr.buffers.get(blk1));

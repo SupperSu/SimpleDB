@@ -1,0 +1,50 @@
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Checking whether requested pinned block[file first, block 1] is already being stored in buffer pool
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: None of buffers hold the requested block, begin to choose uppinned buffer to hold it
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU chooseUnpinnedBuffer
+INFO: generate new Buffer to use and free buffer left3
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: generate new Buffer to hold requested block
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Requested block is stored in buffer, pinned it one more time
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Checking whether requested pinned block[file second, block 2] is already being stored in buffer pool
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: None of buffers hold the requested block, begin to choose uppinned buffer to hold it
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU chooseUnpinnedBuffer
+INFO: generate new Buffer to use and free buffer left2
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: generate new Buffer to hold requested block
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Requested block is stored in buffer, pinned it one more time
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Checking whether requested pinned block[file Third, block 3] is already being stored in buffer pool
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: None of buffers hold the requested block, begin to choose uppinned buffer to hold it
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU chooseUnpinnedBuffer
+INFO: generate new Buffer to use and free buffer left1
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: generate new Buffer to hold requested block
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Requested block is stored in buffer, pinned it one more time
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Checking whether requested pinned block[file Sixth, block 6] is already being stored in buffer pool
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: None of buffers hold the requested block, begin to choose uppinned buffer to hold it
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU chooseUnpinnedBuffer
+INFO: generate new Buffer to use and free buffer left0
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: generate new Buffer to hold requested block
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Requested block is stored in buffer, pinned it one more time
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Checking whether requested pinned block[file Fourth, block 4] is already being stored in buffer pool
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: None of buffers hold the requested block, begin to choose uppinned buffer to hold it
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU chooseUnpinnedBuffer
+INFO: find the least recently used buffer which has block[file first, block 1]
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Find the LRU unpinned buffer which holds[file first, block 1]
+Apr 11, 2017 11:45:11 AM simpledb.buffer.BufferMgrLRU pin
+INFO: Requested block is stored in buffer, pinned it one more time
