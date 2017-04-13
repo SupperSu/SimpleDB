@@ -38,17 +38,23 @@ public class SimpleDB {
    public static String Buffer_Basic_log = "cs542_basic_log";
    public static String Buffer_LRU_log = "cs542_LRU_log";
    public static String Buffer_FIFO_log = "cs542_FIFO_log";
+   public static String RecMgr_log = "cs542_RecMgr_log";
    /**
     * Initializes the system.
     * This method is called during system startup.
     * @param dirname the name of the database directory
     */
    private static Logger logger;
-   
+   private static Logger recLogger;
    // Logger for ouput log
    public static Logger getLogger(){
 	   return logger;
    }
+   
+   public static Logger getRecLogger(){
+	   return recLogger;
+   }
+   
    
    public static void init(String dirname, int bufferMgr) {
 	  System.out.println(dirname);
@@ -64,6 +70,7 @@ public class SimpleDB {
          logger.log(Level.INFO, "Recovering existing database");
          tx.recover();
       }
+      
       initMetadataMgr(isnew, tx);
       tx.commit();
    }
@@ -102,6 +109,22 @@ public class SimpleDB {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+      try {
+	  		Locale.setDefault(Locale.ENGLISH);
+			FileHandler logFileHandler = new FileHandler(RecMgr_log);
+			logFileHandler.setLevel(Level.ALL);
+
+			SimpleFormatter simpleFormatter = new SimpleFormatter();
+			logFileHandler.setFormatter(simpleFormatter);
+
+			recLogger = Logger.getGlobal();
+			recLogger.setUseParentHandlers(false);
+
+			recLogger.addHandler(logFileHandler);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+     
    }
    
    /**

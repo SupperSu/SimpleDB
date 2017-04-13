@@ -4,6 +4,8 @@ import static simpledb.tx.recovery.LogRecord.*;
 import simpledb.file.Block;
 import simpledb.buffer.Buffer;
 import simpledb.server.SimpleDB;
+import simpledb.tx.Transaction;
+
 import java.util.*;
 
 
@@ -45,6 +47,7 @@ public class RecoveryMgr {
    public void writeCheck(){
 	   int lsn = new CheckpointRecord().writeToLog();
 	   SimpleDB.logMgr().flush(lsn);
+	   
    }
    /**
     * Recovers uncompleted transactions from the log,
@@ -123,6 +126,7 @@ public class RecoveryMgr {
       Iterator<LogRecord> iter = new LogRecordIterator();
       while (iter.hasNext()) {
          LogRecord rec = iter.next();
+         System.out.println(rec.toString());
          if (rec.op() == CHECKPOINT)
             return;
          if (rec.op() == COMMIT || rec.op() == ROLLBACK)
@@ -131,7 +135,7 @@ public class RecoveryMgr {
             rec.undo(txnum);
       }
    }
-
+   
    /**
     * Determines whether a block comes from a temporary file or not.
     */

@@ -3,6 +3,7 @@ package simpledb.tx;
 import simpledb.server.SimpleDB;
 import simpledb.file.Block;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class Transaction {
    private BufferList myBuffers = new BufferList();
    private static Map<Integer, Transaction> active = new HashMap<Integer, Transaction>();
    private static Map<Integer, Transaction> waitList = new HashMap<Integer, Transaction>();
+   private static boolean isChecking = false;
    /**
     * Creates a new transaction and its associated 
     * recovery and concurrency managers.
@@ -45,36 +47,50 @@ public class Transaction {
 	   recoveryMgr = new RecoveryMgr(txnum);
 	   concurMgr   = new ConcurrencyMgr();
 	   count++;
-	   if (count % 5 == 0){
+	   // every two transactions instantiated make a check point.
+	   if (count % 2 == 0){
 		   if (active.isEmpty()){
+			   System.out.println("Finishing the check point");
 			   recoveryMgr.writeCheck();
+			   isChecking = false;
+		   }else{
+			   System.out.println("waiting for performing check point");
+			   isChecking = true;
+			   waitList.put(this.txnum, this);
 		   }
 	   }
-	   if (active.isEmpty()){
+	   // if a checkpoint is performing add it to wait list otherwise to active.
+	   if (isChecking == false)
+	   {
 		   active.put(this.txnum, this);
-	   } else {
-		   System.out.println("add to wait list");
-		   waitList.put(this.txnum, this);
 	   }
    }
    
+  
    /**
     * Commits the current transaction.
     * Flushes all modified buffers (and their log records),
     * writes and flushes a commit record to the log,
     * releases all locks, and unpins any pinned buffers.
     */
+   
    public void commit() {
-      recoveryMgr.commit();
-      concurMgr.release();
-      myBuffers.unpinAll();
-      System.out.println("transaction " + txnum + " committed");
-      active.remove(this.txnum);
-      if (active.isEmpty()){
-    	  System.out.println("waitList to active list");
-    	  active.putAll(waitList);
-    	  waitList.clear();
-      }
+	  if (active.containsKey(this.txnum)){
+		  recoveryMgr.commit();
+	      concurMgr.release();
+	      myBuffers.unpinAll();
+	      System.out.println("transaction " + txnum + " committed");
+	      active.remove(this.txnum);
+	      
+	      if (active.isEmpty()){
+	    	  System.out.println("waitList to active list" );
+	    	  active.putAll(waitList);
+	    	  waitList.clear();
+	      }
+	  } else {
+		  System.out.println("this transaction " + this.txnum+" is in wait list");
+	  }
+      
    }
    
    /**
@@ -223,7 +239,7 @@ public class Transaction {
       unpin(blk);
       return blk;
    }
-   
+  
    private static synchronized int nextTxNumber() {
       nextTxNum++;
       System.out.println("new transaction: " + nextTxNum);

@@ -1,6 +1,9 @@
 package simpledb.tx.recovery;
 
+import java.util.logging.Level;
+
 import simpledb.log.BasicLogRecord;
+import simpledb.server.SimpleDB;
 
 /**
  * The ROLLBACK log record.
@@ -33,6 +36,7 @@ class RollbackRecord implements LogRecord {
     */
    public int writeToLog() {
       Object[] rec = new Object[] {ROLLBACK, txnum};
+      SimpleDB.getRecLogger().log(Level.INFO, this.toString());
       return logMgr.append(rec);
    }
    
