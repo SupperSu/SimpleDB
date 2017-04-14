@@ -4,13 +4,9 @@ import simpledb.file.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-/**
- * Manages the pinning and unpinning of buffers to blocks.
- * @author Edward Sciore
- *
- */
-class FIFO extends BasicBufferMgr{
-   private static Map<Block, Buffer> bufferpool = new LinkedHashMap<Block, Buffer>();
+
+class FIFO extends AbstractBufferMgr{
+   private static Map<Block, BufferLRU> bufferpool = new LinkedHashMap<Block, BufferLRU>();
    private int numAvailable;
    private int bufferPoolSize;
    
@@ -37,7 +33,7 @@ class FIFO extends BasicBufferMgr{
     * Flushes the dirty buffers modified by the specified transaction.
     * @param txnum the transaction's id number
     */
-   synchronized void flushAll(int txnum) {
+   protected synchronized void flushAll(int txnum) {
       for (Buffer buff : bufferpool.values())
          if (buff.isModifiedBy(txnum))
          buff.flush();
@@ -52,8 +48,8 @@ class FIFO extends BasicBufferMgr{
     * @param blk a reference to a disk block
     * @return the pinned buffer
     */
-   synchronized Buffer pin(Block blk) {
-      Buffer buff = findExistingBuffer(blk);
+   protected synchronized Buffer pin(Block blk) {
+      BufferLRU buff = findExistingBuffer(blk);
       if (buff == null) {
          buff = chooseUnpinnedBuffer();
          System.out.println(buff);
@@ -62,7 +58,7 @@ class FIFO extends BasicBufferMgr{
          bufferpool.remove(buff.block());
          long timestamp = System.currentTimeMillis();
          buff.assignToBlock(blk);
-         buff.tagPinedTimeStamp(timestamp);
+         buff.setPinnedTime(timestamp);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -80,8 +76,8 @@ class FIFO extends BasicBufferMgr{
     * @param fmtr a pageformatter object, used to format the new block
     * @return the pinned buffer
     */
-   synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
-      Buffer buff = chooseUnpinnedBuffer();
+   protected synchronized BufferLRU pinNew(String filename, PageFormatter fmtr) {
+      BufferLRU buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
       bufferpool.remove(buff.block());
@@ -96,10 +92,10 @@ class FIFO extends BasicBufferMgr{
     * Unpins the specified buffer.
     * @param buff the buffer to be unpinned
     */
-   synchronized void unpin(Buffer buff) {
+   protected void unpin(BufferLRU buff) {
       buff.unpin();
       long timestamp = System.currentTimeMillis();
-      buff.tagUnPinedTimeStamp(timestamp);
+      buff.setUnPinnedTime(timestamp);
       if (!buff.isPinned())
          numAvailable++;
    }
@@ -108,24 +104,24 @@ class FIFO extends BasicBufferMgr{
     * Returns the number of available (i.e. unpinned) buffers.
     * @return the number of available buffers
     */
-   int available() {
+   protected int available() {
       return numAvailable;
    }
    
-   private Buffer findExistingBuffer(Block blk) {
+   protected BufferLRU findExistingBuffer(Block blk) {
 	  if (bufferpool.containsKey(blk)) {
 		  return bufferpool.get(blk);
 	  }
       return null;
    }
    
-   private Buffer chooseUnpinnedBuffer() {
+   protected BufferLRU chooseUnpinnedBuffer() {
 	   if (numAvailable > 0) {
 		   if (bufferpool.size() < bufferPoolSize) {
-			   Buffer buff = new Buffer();
+			   BufferLRU buff = new BufferLRU();
 			   return buff;
 		   }
-		   for (Map.Entry<Block, Buffer> entry : bufferpool.entrySet()) {
+		   for (Map.Entry<Block, BufferLRU> entry : bufferpool.entrySet()) {
 			   if (!entry.getValue().isPinned()) {
 				   return entry.getValue();
 			   } 
@@ -133,5 +129,10 @@ class FIFO extends BasicBufferMgr{
 	   }
 	   return null;
    }
-   
+
+@Override
+protected void unpin(Buffer buff) {
+	// TODO Auto-generated method stub
+	
+}
 }

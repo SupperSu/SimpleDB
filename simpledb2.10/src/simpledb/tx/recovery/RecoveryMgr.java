@@ -4,7 +4,10 @@ import static simpledb.tx.recovery.LogRecord.*;
 import simpledb.file.Block;
 import simpledb.buffer.Buffer;
 import simpledb.server.SimpleDB;
+import simpledb.tx.Transaction;
+
 import java.util.*;
+
 
 /**
  * The recovery manager.  Each transaction has its own recovery manager.
@@ -12,7 +15,7 @@ import java.util.*;
  */
 public class RecoveryMgr {
    private int txnum;
-
+   
    /**
     * Creates a recovery manager for the specified transaction.
     * @param txnum the ID of the specified transaction
@@ -40,7 +43,12 @@ public class RecoveryMgr {
       int lsn = new RollbackRecord(txnum).writeToLog();
       SimpleDB.logMgr().flush(lsn);
    }
-
+   
+   public void writeCheck(){
+	   int lsn = new CheckpointRecord().writeToLog();
+	   SimpleDB.logMgr().flush(lsn);
+	   
+   }
    /**
     * Recovers uncompleted transactions from the log,
     * then writes a quiescent checkpoint record to the log and flushes it.
@@ -50,7 +58,6 @@ public class RecoveryMgr {
       SimpleDB.bufferMgr().flushAll(txnum);
       int lsn = new CheckpointRecord().writeToLog();
       SimpleDB.logMgr().flush(lsn);
-
    }
 
    /**
@@ -119,6 +126,7 @@ public class RecoveryMgr {
       Iterator<LogRecord> iter = new LogRecordIterator();
       while (iter.hasNext()) {
          LogRecord rec = iter.next();
+         System.out.println(rec.toString());
          if (rec.op() == CHECKPOINT)
             return;
          if (rec.op() == COMMIT || rec.op() == ROLLBACK)
@@ -127,11 +135,12 @@ public class RecoveryMgr {
             rec.undo(txnum);
       }
    }
-
+   
    /**
     * Determines whether a block comes from a temporary file or not.
     */
    private boolean isTempBlock(Block blk) {
       return blk.fileName().startsWith("temp");
    }
+   
 }

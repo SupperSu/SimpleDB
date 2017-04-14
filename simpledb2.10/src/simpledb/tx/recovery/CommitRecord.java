@@ -1,6 +1,11 @@
 package simpledb.tx.recovery;
 
+import java.util.logging.Level;
+
+import javax.sound.midi.MidiDevice.Info;
+
 import simpledb.log.BasicLogRecord;
+import simpledb.server.SimpleDB;
 
 /**
  * The COMMIT log record
@@ -33,8 +38,11 @@ class CommitRecord implements LogRecord {
     */
    public int writeToLog() {
       Object[] rec = new Object[] {COMMIT, txnum};
+      SimpleDB.getRecLogger().log(Level.INFO, this.toString());
       return logMgr.append(rec);
    }
+   
+  
    
    public int op() {
       return COMMIT;

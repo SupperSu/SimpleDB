@@ -41,6 +41,7 @@ public class BasicLogRecord {
       return result;
    }
    
+   
    /**
     * Returns the next value of the current log record, 
     * assuming it is a string.

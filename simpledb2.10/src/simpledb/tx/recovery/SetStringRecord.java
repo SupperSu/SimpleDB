@@ -1,6 +1,9 @@
 package simpledb.tx.recovery;
 
 import simpledb.server.SimpleDB;
+
+import java.util.logging.Level;
+
 import simpledb.buffer.*;
 import simpledb.file.Block;
 import simpledb.log.BasicLogRecord;
@@ -48,6 +51,7 @@ class SetStringRecord implements LogRecord {
    public int writeToLog() {
       Object[] rec = new Object[] {SETSTRING, txnum, blk.fileName(),
          blk.number(), offset, val};
+      SimpleDB.getRecLogger().log(Level.INFO, this.toString());
       return logMgr.append(rec);
    }
    

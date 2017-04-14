@@ -15,15 +15,14 @@ import simpledb.file.*;
  * and if so, the id of the modifying transaction and
  * the LSN of the corresponding log record.
  * @author Edward Sciore
- */
-public class Buffer implements Comparable<Buffer>{
+ */ 
+public class Buffer {
    private Page contents = new Page();
    private Block blk = null;
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
-   private long timePined = 0;
-   private long timeUnPined = -1;
+
    /**
     * Creates a new buffer, wrapping a new 
     * {@link simpledb.file.Page page}.  
@@ -191,48 +190,4 @@ public class Buffer implements Comparable<Buffer>{
       blk = contents.append(filename);
       pins = 0;
    }
-   
-   void tagPinedTimeStamp(long pinedTimeStamp){
-	   timePined = pinedTimeStamp;
-   }
-   void tagUnPinedTimeStamp(long unPinedTimeStamp){
-	   timeUnPined = unPinedTimeStamp;
-   }
-   long getPinedTime(){
-	   return timePined;
-   }
-   long getUnPinedTime(){
-	   return timeUnPined;
-   }
-   boolean isNeverUsed(){
-	   long time = this.timePined;
-	   return time == 0;
-   }
-   @Override
-	public int compareTo(Buffer buff) {
-	   
-	   if (this.isPinned()){
-		   return Integer.MAX_VALUE;
-	   }else {
-		 if(!buff.isPinned())
-			   return Math.toIntExact((this.timeUnPined - buff.timeUnPined) / 1000000);
-		 else{
-			 return Integer.MIN_VALUE;
-		 }
-		   
-	   }
-	   
-//	    if(!buff.isPinned() && !this.isPinned()){
-//	    	return Math.toIntExact(this.timeUnPined - buff.timeUnPined);
-//	    }
-//	    if (this.isPinned())return Integer.MAX_VALUE;
-	    
-	}
-	
-   public static Comparator<Buffer> BufferUnpinedTimeComparator = new Comparator<Buffer>(){
-	   public int compare(Buffer buff1, Buffer buff2){
-		   return buff1.compareTo(buff2);
-	   }
-   };
-   
 }

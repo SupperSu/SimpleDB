@@ -7,7 +7,7 @@ import simpledb.file.*;
  * @author Edward Sciore
  *
  */
-class BasicBufferMgr {
+class BasicBufferMgr extends AbstractBufferMgr{
    public Buffer[] bufferpool;
    private int numAvailable;
    
@@ -25,6 +25,7 @@ class BasicBufferMgr {
     * @param numbuffs the number of buffer slots to allocate
     */
    BasicBufferMgr(int numbuffs) {
+	  super(numbuffs);
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
       for (int i=0; i<numbuffs; i++)
@@ -36,7 +37,8 @@ class BasicBufferMgr {
     * flush means force a specific to disk
     * @param txnum the transaction's id number
     */
-   synchronized void flushAll(int txnum) {
+   @Override
+   protected synchronized void flushAll(int txnum) {
       for (Buffer buff : bufferpool)
          if (buff.isModifiedBy(txnum))
          buff.flush();
@@ -51,7 +53,8 @@ class BasicBufferMgr {
     * @param blk a reference to a disk block
     * @return the pinned buffer
     */
-   synchronized Buffer pin(Block blk) {
+   @Override
+   protected synchronized Buffer pin(Block blk) {
       Buffer buff = findExistingBuffer(blk);
       if (buff == null) {
          buff = chooseUnpinnedBuffer();
@@ -74,7 +77,8 @@ class BasicBufferMgr {
     * @param fmtr a pageformatter object, used to format the new block
     * @return the pinned buffer
     */
-   synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
+   @Override
+   protected synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
@@ -88,7 +92,8 @@ class BasicBufferMgr {
     * Unpins the specified buffer.
     * @param buff the buffer to be unpinned
     */
-   synchronized void unpin(Buffer buff) {
+   @Override
+   protected synchronized void unpin(Buffer buff) {
       buff.unpin();
       if (!buff.isPinned())
          numAvailable++;
@@ -98,11 +103,12 @@ class BasicBufferMgr {
     * Returns the number of available (i.e. unpinned) buffers.
     * @return the number of available buffers
     */
-   int available() {
+   @Override
+   protected int available() {
       return numAvailable;
    }
-   
-   private Buffer findExistingBuffer(Block blk) {
+   @Override
+   protected Buffer findExistingBuffer(Block blk) {
       for (Buffer buff : bufferpool) {
          Block b = buff.block();
          if (b != null && b.equals(blk))
@@ -110,12 +116,13 @@ class BasicBufferMgr {
       }
       return null;
    }
-   
-   private Buffer chooseUnpinnedBuffer() {
+   @Override
+   protected Buffer chooseUnpinnedBuffer() {
       for (Buffer buff : bufferpool)
          if (!buff.isPinned())
          return buff;
       
       return null;
    }
+
 }

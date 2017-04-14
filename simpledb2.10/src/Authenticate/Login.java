@@ -2,7 +2,7 @@ package Authenticate;
 import java.util.*;import java.applet.*;import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-
+import simpledb.server.*;
 
 
 public class Login extends Applet implements ActionListener{
@@ -60,6 +60,7 @@ public class Login extends Applet implements ActionListener{
 	            	
 	            	 errorApplet.infoBox("Success !", "Success Message");
 	            }
+	           
 	           
 	        }
 	        else if(e.getSource()==b2){

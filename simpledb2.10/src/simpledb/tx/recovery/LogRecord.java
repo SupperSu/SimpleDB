@@ -6,6 +6,7 @@ import simpledb.server.SimpleDB;
 /**
  * The interface implemented by each type of log record.
  * @author Edward Sciore
+ * 		   Modified by Yupeng
  */
 public interface LogRecord {
    /**
@@ -13,7 +14,7 @@ public interface LogRecord {
     */
    static final int CHECKPOINT = 0, START = 1,
       COMMIT = 2, ROLLBACK  = 3,
-      SETINT = 4, SETSTRING = 5;
+      SETINT = 4, SETSTRING = 5, NQCKPT = 6;
    
    static final LogMgr logMgr = SimpleDB.logMgr();
    

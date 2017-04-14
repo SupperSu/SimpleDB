@@ -1,6 +1,9 @@
 package simpledb.tx.recovery;
 
+import java.util.logging.Level;
+
 import simpledb.log.BasicLogRecord;
+import simpledb.server.SimpleDB;
 
 /**
  * The CHECKPOINT log record.
@@ -28,6 +31,7 @@ class CheckpointRecord implements LogRecord {
     */
    public int writeToLog() {
       Object[] rec = new Object[] {CHECKPOINT};
+      SimpleDB.getRecLogger().log(Level.INFO, this.toString());
       return logMgr.append(rec);
    }
    
