@@ -56,6 +56,9 @@ public class Login extends Applet implements ActionListener{
 		            textUser.setText(null);
 		            textPass.setText(null);
 	            	
+	            }else{
+	            	
+	            	 errorApplet.infoBox("Success !", "Success Message");
 	            }
 	           
 	        }

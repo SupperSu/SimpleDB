@@ -21,4 +21,6 @@ public class errorApplet
     {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    
 }

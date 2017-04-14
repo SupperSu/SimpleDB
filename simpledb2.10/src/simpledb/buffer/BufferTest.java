@@ -61,7 +61,7 @@ public class BufferTest {
 		Buffer buff3 = fifo.pin(blk3);
 		Buffer buff4 = fifo.pin(blk4);
 		fifo.unpin(buff2);
-		fifo.unpin(buff3);
+		fifo.unpin(buff1);
 		fifo.unpin(buff4);
 		fifo.pin(blk5);
 	}
