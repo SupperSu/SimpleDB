@@ -11,48 +11,52 @@ import simpledb.remote.RemoteDriverImpl;
 import simpledb.server.*;
 
 
-public class Login extends Applet implements ActionListener{
-	
-	//private JPanel pane = null; // 
+public class CenterTry{
+}
+
+//extends Applet implements ActionListener{
+
+	 /* //private JPanel pane = null; // 
 	//private JPanel p = null;
-	    JTextField textUser;
-	    JPasswordField textPass;
-	    JButton b1,b2;
-	    JLabel l1,l2,error;
-	    Window window;
-	    Dimension screenSize;
-	    JPanel gui;
-	    Random r = new Random();
+	  
 	 
 	    public void init(){
+	    	JFrame myWindow = new JFrame("HELLO");
+	    	myWindow.setSize(500,500);
+	    	myWindow.setLocation(500, 350);
+	    	
+	    	
+	    	// add a new text field
+	    	 myWindow.setLayout(new BorderLayout());
+	    	 JPanel mainPanel = new JPanel(new GridBagLayout());
+	       JTextField textUser= new JTextField(20);
+	        myWindow.add(textUser);
+	        JLabel l1 = new JLabel("UserName");
+	        l1.setText("User Name:");
+	        JLabel l2 = new JLabel("Password: ");
+	        myWindow.add(l1);
+	        myWindow.add(l2);
+	        myWindow.setVisible(true);
 	    
-	        textUser=new JTextField("",10);
-	        textUser.setBackground(Color.white);
-	        //myWindow.add(textUser);
-	        
-	        textPass =new JPasswordField("",10);
-	        textPass.setBackground(Color.white);
-	        
-	      //  authen = new JLabel("Authentication", SwingConstants.CENTER);
-	        l1 = new JLabel ("username");
-	        l2 = new JLabel ("password");
-	        b1=new JButton("confirm"); 
-	        b2=new JButton("clear");
-	        b1.addActionListener(this);
-	        b2.addActionListener(this);
-	       
-	        add(l1);
-	        add(textUser);
-	        add(l2);
-	        add(textPass);
-	        add(b1);
-	        add(b2);
-	        
+	        JLabel label1 = new JLabel("Test");
+	    	 JPanel panel = new JPanel(new GridLayout(0, 2));
+	         panel.add(new JLabel("User: "));
+	         JTextField name = new JTextField(20);
+	         panel.add(name);
+	         panel.add(new JLabel("Password: "));
+	         JTextField Password = new JTextField(15);
+	         panel.add(Password);
+	         panel.setBorder(BorderFactory.createTitledBorder("Enter your username and password please."));
+	         mainPanel.add(panel);
+	         myWindow.add(mainPanel);
+	         myWindow.pack();
+	         myWindow.setVisible(true);
+	  
 	       
 	        //pane.add(error);
 	    }
 	    
-	    public void actionPerformed(ActionEvent e){
+	  public void actionPerformed(ActionEvent e){
 	        if(e.getSource()==b1){
 	            String username = textUser.getText();
 	            String myPass=String.valueOf(textPass.getPassword());
@@ -87,13 +91,12 @@ public class Login extends Applet implements ActionListener{
 	           
 	        
 
-	        
 	        else if(e.getSource()==b2){
 	            textUser.setText(null);
 	            textPass.setText(null);
 	        }
-	    }	
-}
+	    }*/	
+
 	  
 	    
 
