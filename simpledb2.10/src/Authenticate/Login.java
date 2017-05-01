@@ -17,7 +17,7 @@ public class Login extends Applet implements ActionListener{
 	//private JPanel p = null;
 	    JTextField textUser;
 	    JPasswordField textPass;
-	    JButton b1,b2;
+	    JButton b1,b2,b3;
 	    JLabel l1,l2,error;
 	    Window window;
 	    Dimension screenSize;
@@ -38,8 +38,10 @@ public class Login extends Applet implements ActionListener{
 	        l2 = new JLabel ("password");
 	        b1=new JButton("confirm"); 
 	        b2=new JButton("clear");
+	        b3 = new JButton("New User");
 	        b1.addActionListener(this);
 	        b2.addActionListener(this);
+	      //  b3.addActionListener(this);
 	       
 	        add(l1);
 	        add(textUser);
@@ -47,6 +49,7 @@ public class Login extends Applet implements ActionListener{
 	        add(textPass);
 	        add(b1);
 	        add(b2);
+	       // add(b3);
 	        
 	       
 	        //pane.add(error);
@@ -92,6 +95,7 @@ public class Login extends Applet implements ActionListener{
 	            textUser.setText(null);
 	            textPass.setText(null);
 	        }
+	       
 	    }	
 }
 	  

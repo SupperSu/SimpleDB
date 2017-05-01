@@ -29,6 +29,9 @@ public class pairs {
 		}
 		return false;
 	}
+	private boolean newUser(String username, String password){
+		return true;
+	}
 
 }
 
