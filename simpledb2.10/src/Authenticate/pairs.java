@@ -10,6 +10,12 @@ public class pairs {
 		System.out.println(re);
 		
 	}
+	/**
+	 * to store the username and password.
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public static boolean searchPairs(String username, String password){
 		Map<String, String> pairs = new HashMap<String,String> ();
 		String userX = "xu";

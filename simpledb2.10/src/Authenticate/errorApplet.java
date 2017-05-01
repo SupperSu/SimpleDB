@@ -16,6 +16,11 @@ import javax.swing.JOptionPane;
 
 public class errorApplet
 {
+	/**
+	 * to show the error message
+	 * @param infoMessage
+	 * @param titleBar
+	 */
 
     public static void infoBox(String infoMessage, String titleBar)
     {

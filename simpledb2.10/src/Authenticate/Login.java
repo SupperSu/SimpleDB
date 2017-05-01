@@ -13,8 +13,7 @@ import simpledb.server.*;
 
 public class Login extends Applet implements ActionListener{
 	
-	//private JPanel pane = null; // 
-	//private JPanel p = null;
+
 	    JTextField textUser;
 	    JPasswordField textPass;
 	    JButton b1,b2,b3;
@@ -23,17 +22,20 @@ public class Login extends Applet implements ActionListener{
 	    Dimension screenSize;
 	    JPanel gui;
 	    Random r = new Random();
+	    /**
+	     * init the main window by Applet,and the main window includes buttons, text fields and labels. 
+	     */
 	 
 	    public void init(){
 	    
 	        textUser=new JTextField("",10);
 	        textUser.setBackground(Color.white);
-	        //myWindow.add(textUser);
+	   
 	        
 	        textPass =new JPasswordField("",10);
 	        textPass.setBackground(Color.white);
 	        
-	      //  authen = new JLabel("Authentication", SwingConstants.CENTER);
+	  
 	        l1 = new JLabel ("username");
 	        l2 = new JLabel ("password");
 	        b1=new JButton("confirm"); 
@@ -41,7 +43,7 @@ public class Login extends Applet implements ActionListener{
 	        b3 = new JButton("New User");
 	        b1.addActionListener(this);
 	        b2.addActionListener(this);
-	      //  b3.addActionListener(this);
+	     
 	       
 	        add(l1);
 	        add(textUser);
@@ -49,12 +51,14 @@ public class Login extends Applet implements ActionListener{
 	        add(textPass);
 	        add(b1);
 	        add(b2);
-	       // add(b3);
-	        
-	       
-	        //pane.add(error);
 	    }
 	    
+	    /**
+	     * this is why the class implemented actionListener, we should get what the users have input in the text field and compare them whether what 
+	     * we have stored in the "pair" class. 
+	     * Also, if the user has passed the validation process, we can initiate the database and bounce out a successful information box.
+	     * Else, the error information box would be pop up.
+	     */
 	    public void actionPerformed(ActionEvent e){
 	        if(e.getSource()==b1){
 	            String username = textUser.getText();
@@ -67,7 +71,7 @@ public class Login extends Applet implements ActionListener{
 	            re = pairs.searchPairs(username,myPass);
 	            if(!re){
 	            	
-		            //feedback.append("Bon Voyage!\n");
+		           
 		            errorApplet.infoBox("Invalid Username or password !", "Error Message");
 		            textUser.setText(null);
 		            textPass.setText(null);
@@ -79,7 +83,6 @@ public class Login extends Applet implements ActionListener{
 	            		  
 						Startup.main(args);
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 	            	 
