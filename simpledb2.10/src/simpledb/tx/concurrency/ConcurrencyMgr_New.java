@@ -11,13 +11,13 @@ import java.util.*;
  * 
  * @author Edward Sciore
  */
-public class ConcurrencyMgr {
+public class ConcurrencyMgr_New {
 
 	/**
 	 * The global lock table. This variable is static because all transactions
 	 * share the same table.
 	 */
-	private static LockTable locktbl = new LockTable();
+	private static LockTable_New locktbl = new LockTable_New();
 	private Map<Block, String> locks = new HashMap<Block, String>();
 
 	/**
@@ -30,7 +30,8 @@ public class ConcurrencyMgr {
 	 */
 	public void sLock(Block blk) {
 		if (locks.get(blk) == null) {
-			locktbl.sLock(blk);
+			long timestamp = System.currentTimeMillis();
+			locktbl.sLock(blk, timestamp);
 			locks.put(blk, "S");
 		}
 	}
@@ -45,8 +46,9 @@ public class ConcurrencyMgr {
 	 */
 	public void xLock(Block blk) {
 		if (!hasXLock(blk)) {
+			long timestamp = System.currentTimeMillis();
 			sLock(blk);
-			locktbl.xLock(blk);
+			locktbl.xLock(blk, timestamp);
 			locks.put(blk, "X");
 		}
 	}
